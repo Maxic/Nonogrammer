@@ -8,7 +8,7 @@ class img:
         columns = nonogram[1]
         height = len(rows)
         width = len(columns)
-        gridSize = 14
+        gridSize = 16
         gridStartX, gridStartY = self.getGridStartCoordinates(columns, rows, gridSize)
 
         # Calculate image size and create image
@@ -29,10 +29,10 @@ class img:
 
     def drawHorizontalNumbers(self, image, gridStartX, gridStartY, stepSize, columns):
         draw = ImageDraw.Draw(image)
-        drawPosX = gridStartX + 3
+        drawPosX = gridStartX + 5
 
         for column in columns:
-            drawPosY = gridStartY - stepSize
+            drawPosY = (gridStartY + 4)- stepSize
             for numberClue in reversed(column):
                 if numberClue >  9:
                     draw.text((drawPosX-2, drawPosY), str(numberClue))
@@ -45,7 +45,7 @@ class img:
         draw = ImageDraw.Draw(image)
         drawPosY = gridStartY
         for row in rows:
-            drawPosX = gridStartX - stepSize
+            drawPosX = (gridStartX + 4) - stepSize
             for numberClue in reversed(row):
                 draw.text((drawPosX, drawPosY), str(numberClue))
                 drawPosX -= stepSize
