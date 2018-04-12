@@ -9,7 +9,7 @@ class Nonogram:
             count = 0
             rowNumbers = []
             for column in row:
-                if column == 1:
+                if column:
                     count += 1
                 elif count != 0:
                     rowNumbers.append(count)

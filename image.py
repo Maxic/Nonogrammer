@@ -3,7 +3,6 @@ from PIL import Image, ImageDraw
 class img:
 
     def drawNonogram(self, nonogram):
-        print(nonogram)
         rows = nonogram[0]
         columns = nonogram[1]
         height = len(rows)

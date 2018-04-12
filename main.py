@@ -20,6 +20,8 @@ matrix = np.array([
     (0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0),
     (0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0)
 ])
+
+
 nonogramDefinition = nonogram.generateNonogramFromMatrix(matrix)
 img = img()
 img.drawNonogram(nonogramDefinition)
