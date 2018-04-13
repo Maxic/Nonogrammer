@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw
 
-class img:
+class Img:
 
     def drawNonogram(self, nonogram):
         rows = nonogram[0]
