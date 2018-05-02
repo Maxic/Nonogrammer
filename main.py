@@ -4,16 +4,16 @@ from nonogram import Nonogram
 from image import Img
 import numpy as np
 
-
 ######  DEFINE GRID HERE  ######
-ROWS = 15
-COLS = 15
-GRIDSIZE = 40
+ROWS = 10
+COLS = 10
+GRIDSIZE = 60
 
 # Initialize
 nonogram = Nonogram()
 img = Img()
 tiles = [[0 for _ in range(COLS)] for _ in range(ROWS)]
+
 
 def create_grid(event=None):
     w = grid.winfo_width() # Get current width of canvas
@@ -47,8 +47,13 @@ def callbackGrid(event):
 def callbackGenerate():
     # Generate nonogram and destroy window.
     nonogramDefinition = nonogram.generateNonogramFromMatrix(np.array(tiles))
-    img.drawNonogram(nonogramDefinition)
-    root.destroy()
+    if nonogram.solve(nonogramDefinition):
+        img.drawNonogram(nonogramDefinition)
+        #root.destroy()
+    else:
+        # ToDo: Some UI feedback stuff
+        print("Not good man")
+
 
 if __name__ == "__main__":
     root = tk.Tk()
