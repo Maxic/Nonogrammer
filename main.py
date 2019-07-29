@@ -1,13 +1,14 @@
 import tkinter as tk
-from tkinter import *
+from tkinter import messagebox, Button
 from nonogram import Nonogram
 from image import Img
 import numpy as np
 
-######  DEFINE GRID HERE  ######
+# #####  DEFINE GRID HERE  ###### #
 ROWS = 10
 COLS = 10
-GRIDSIZE = 60
+# Visual size of grid box
+GRID_SIZE = 40
 
 # Initialize
 nonogram = Nonogram()
@@ -16,19 +17,20 @@ tiles = [[0 for _ in range(COLS)] for _ in range(ROWS)]
 
 
 def create_grid(event=None):
-    w = grid.winfo_width() # Get current width of canvas
-    h = grid.winfo_height() # Get current height of canvas
-    grid.delete('grid_line') # Will only remove the grid_line
+    w = grid.winfo_width()  # Get current width of canvas
+    h = grid.winfo_height()  # Get current height of canvas
+    grid.delete('grid_line')  # Will only remove the grid_line
 
     # Creates all vertical lines at intevals of 100
-    for i in range(0, w, GRIDSIZE):
+    for i in range(0, w, GRID_SIZE):
         grid.create_line([(i, 0), (i, h)], tag='grid_line')
 
     # Creates all horizontal lines at intevals of 100
-    for i in range(0, h, GRIDSIZE):
+    for i in range(0, h, GRID_SIZE):
         grid.create_line([(0, i), (w, i)], tag='grid_line')
 
-def callbackGrid(event):
+
+def callback_grid(event):
     # Get rectangle diameters
     col_width = int(grid.winfo_width()/COLS)
     row_height = int(grid.winfo_height()/ROWS)
@@ -44,25 +46,24 @@ def callbackGrid(event):
         grid.delete(tiles[row][col])
         tiles[row][col] = None
 
-def callbackGenerate():
+
+def callback_generate():
     # Generate nonogram and destroy window.
-    nonogramDefinition = nonogram.generateNonogramFromMatrix(np.array(tiles))
-    if nonogram.solve(nonogramDefinition):
-        img.drawNonogram(nonogramDefinition)
-        #root.destroy()
-    else:
-        # ToDo: Some UI feedback stuff
-        print("Not good man")
+    nonogram_definition = nonogram.generate_nonogram_from_matrix(np.array(tiles))
+    # if nonogram.solve(nonogram_definition): TODO: Implement solver
+    img.draw_nonogram(nonogram_definition)
+    messagebox.showinfo("Completed", "Succes! \nYour Nonogram puzzle is saved as Nonogram.bpm in this directory.")
+    root.destroy()
 
 
 if __name__ == "__main__":
     root = tk.Tk()
-    grid = tk.Canvas(root, width=COLS*GRIDSIZE, height=ROWS*GRIDSIZE, background='white')
-    button = Button(root, text="Generate", command=callbackGenerate)
+    grid = tk.Canvas(root, width=COLS * GRID_SIZE, height=ROWS * GRID_SIZE, background='white')
+    button = Button(root, text="Generate", command=callback_generate)
 
     grid.pack()
     button.pack()
     grid.bind('<Configure>', create_grid)
-    grid.bind("<Button-1>", callbackGrid)
+    grid.bind("<Button-1>", callback_grid)
 
     root.mainloop()

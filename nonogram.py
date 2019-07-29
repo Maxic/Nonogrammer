@@ -1,74 +1,77 @@
 from itertools import combinations
-import numpy as np
+
 
 class Nonogram:
+    def generate_nonogram_from_matrix(self, matrix):
+        return self.generate_nonogram_rows(matrix), self.generate_nonogram_rows(matrix.transpose())
 
-    def generateNonogramFromMatrix(self, matrix):
-        return (self.generateNonogramRows(matrix), self.generateNonogramRows(matrix.transpose()))
-
-    def generateNonogramRows(self, matrix):
-        nonogramRows = []
+    @staticmethod
+    def generate_nonogram_rows(matrix):
+        nonogram_rows = []
         for row in matrix:
             count = 0
-            rowNumbers = []
+            row_numbers = []
             for index in row:
+                # Value that's not filled in is either 0 or None
                 if index:
                     count += 1
                 elif count != 0:
-                    rowNumbers.append(count)
-                    count= 0
+                    row_numbers.append(count)
+                    count = 0
             if count != 0:
-                rowNumbers.append(count)
-            nonogramRows.append(rowNumbers)
-        return nonogramRows
+                row_numbers.append(count)
+            nonogram_rows.append(row_numbers)
+        return nonogram_rows
 
-    def generatePossibleRows(self, rowDefinition, rowSize):
-        numberClueSum = sum(rowDefinition)
-        generatedRows = []
+    @staticmethod
+    def generate_possible_rows(row_definition, row_size):
+        number_clue_sum = sum(row_definition)
+        generated_rows = []
 
-        for positions in combinations(range(rowSize), numberClueSum):
-            p = [0] * rowSize
+        for positions in combinations(range(row_size), number_clue_sum):
+            p = [0] * row_size
             for i in positions:
                 p[i] = 1
-            generatedRows.append(p)
+            generated_rows.append(p)
 
-        return generatedRows
+        return generated_rows
 
-    def checkRowIsValid(self, rowDefinition, row):
+    @staticmethod
+    def check_row_is_valid(row_definition, row):
 
         count = 0
-        rowNumbers = []
+        row_numbers = []
         for index in row:
             if index:
                 count += 1
             elif count != 0:
-                rowNumbers.append(count)
+                row_numbers.append(count)
                 count = 0
         if count != 0:
-            rowNumbers.append(count)
+            row_numbers.append(count)
 
-        if rowNumbers.__eq__(rowDefinition):
+        if row_numbers.__eq__(row_definition):
             return True
         else:
             return False
 
-    def solve(self, nonogramDefinition):
-        rowDefinitions = nonogramDefinition[0]
-        colDefinitions = nonogramDefinition[1]
-        colSize = len(rowDefinitions)
-        rowSize = len(rowDefinitions)
+    def solve(self, nonogram_definition):
+        row_definitions = nonogram_definition[0]
+        col_definitions = nonogram_definition[1]
+        col_size = len(row_definitions)
+        row_size = len(row_definitions)
 
         count = 0
-        for rowDefinition in rowDefinitions:
+        for rowDefinition in row_definitions:
             count += 1
-            possibleRows = self.generatePossibleRows(rowDefinition, rowSize )
+            possible_rows = self.generate_possible_rows(rowDefinition, row_size)
 
-            possibleValidRows = []
-            for row in possibleRows:
-                if self.checkRowIsValid(rowDefinition, row):
-                    possibleValidRows.append(row)
+            possible_valid_rows = []
+            for row in possible_rows:
+                if self.check_row_is_valid(rowDefinition, row):
+                    possible_valid_rows.append(row)
 
             print("Possible rows for row: " + str(count))
-            print(possibleValidRows)
+            print(possible_valid_rows)
 
         return True
